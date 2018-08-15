@@ -1,0 +1,32 @@
+{
+  "name": "ch-tmobile_thuis_smartly_feed",
+  "version": "1.0.0",
+  "description": "Extends json values extracted from the description field to the proposition.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "lint": "npx eslint *.js src/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GreenhouseGroupBV/ch-tmobile-thuis-smartly-feed.git"
+  },
+  "author": "Tom Klaversma <tom.klaversma@greenhousegroup.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GreenhouseGroupBV/ch-tmobile-thuis-smartly-feed/issues"
+  },
+  "homepage": "https://github.com/GreenhouseGroupBV/ch-tmobile-thuis-smartly-feed#readme",
+  "dependencies": {
+    "dotenv": "^6.0.0",
+    "express": "^4.16.2",
+    "request": "^2.87.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.13.0"
+  }
+}
