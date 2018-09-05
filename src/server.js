@@ -14,24 +14,49 @@ app.get('/propositions', async (req, res) => {
       agency,
       days,
       size,
+      fieldsToFlatten,
     } = req.query;
+
+    if (!size) {
+      throw new Error('Please provide a size parameter and use a number to determine the propositions to return.');
+    }
+
+    const allowedFields = [
+      'title',
+      'description',
+      'priceNormal',
+      'priceDiscount',
+      'stickerText',
+      'custom1',
+      'custom2',
+      'custom3',
+      'custom4',
+    ];
 
     const resp = await rp(`${smartlyHerokuApiUrl}?advertiser=${advertiser}&dynamicInputId=${dynamicInputId}&agency=${agency}&days=${days}&size=${size}`);
     const respJSON = JSON.parse(resp);
 
-    respJSON.items = respJSON.items.map((item) => {
-      const newProposition = item;
+    if (!fieldsToFlatten) {
+      res.send(resp);
+    } else {
+      const fields = fieldsToFlatten.split(',')
+        .filter(item => allowedFields.includes(item));
 
-      JSON.parse(item.description).forEach((prop) => {
-        newProposition[prop.name] = prop.value;
+      respJSON.items = respJSON.items.map((item) => {
+        const newProposition = item;
+
+        fields.forEach((field) => {
+          JSON.parse(newProposition[field]).forEach((prop) => {
+            newProposition[prop.name] = prop.value;
+          });
+          newProposition[field] = '';
+        });
+
+        return newProposition;
       });
 
-      newProposition.description = '';
-
-      return newProposition;
-    });
-
-    res.send(respJSON);
+      res.send(respJSON);
+    }
   } catch (e) {
     console.log(e);
     res.status(502).json({ error: e.toString() });
